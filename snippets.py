@@ -19,22 +19,6 @@ def isqrt (n):
         bit = bit>> 2
     return res
 
-# print("sqrt : ",isqrt(10**76))
-# bit = 1<< 14;
-# while (bit > 81):
-#     bit = bit >> 2
-# print('binary test',bin(128), bin(bit),(1<<4),bin(27-16),0b1001110001)
-# test= 934032
-#
-# for i in range(math.ceil(str(test).__len__()/2)):
-#     print(str(test)[i*2:i*2+2])
-# i=2
-# pre = int(str(test)[:i*2])
-# post = int(str(test)[2:4])
-# print("pre post", pre, post)
-#
-# a = 13 % 5
-# print(a)
 
 def divide(n, div: int, inc =0):
     start = div
@@ -71,44 +55,6 @@ def sq(n):
         total_div = total_div * 10 + div
         post = str(post)[2:]
     print("square root of ","{0:,}".format(n), " is ","{0:,}".format(total_div))
-
-# print(math.sqrt(3*10**5))
-# a = [randint(0, 100) for _ in range(0, 21)]
-#
-# #x = list(map(sum, zip(a[::2], a[1::2])))
-# b = list(map(sum, zip(a[::2], a[1::2])))
-# x= [all(sum(i) ==90 for i in  zip(a[::2], a[1::2]) )]
-# print(x)
-# print(a)
-# print(b)
-# print(len(list(map(sum, zip(a[::2], a[1::2])))),len(a))
-# print(next ((i for i in [1,6,3,9,4] if i == 0),-1))
-# print('list gen test')
-# print(len(a))
-# for x in range (1,len(a)):
-#     print('creating',x)
-#     print([a[i::1+x] for i in range(x+1)])
-#
-# for i in range(9):
-#     print(randint(0,1))
-#
-#
-# print("test",-1*3)
-# print(type({}))
-#
-# swapper = lambda x,y : (y,x)
-# print(type(swapper))
-# (a,b)=swapper(3,9)
-# print(swapper(3,9))
-# print('swap test', a,b)
-#
-# a=b= 0
-# b = 3
-
-# print(a,b)
-# print('floor',3.2//1)
-# print(1%1)
-# print('ceil',-(-1.2//1))
 
 def fn(arg):
     print(arg)
@@ -172,9 +118,6 @@ def hanoi2(start,end,temp,n):
         hanoi2(temp,end,start,n-1)
         start,end= mv(start,end)
         print(start,end,temp)
-        # break
-        # start,temp,end = hanoi2(start,temp,end)
-        # temp,start,end = hanoi2(temp,start,end)
         return start,end,temp,n
     else:
         return
@@ -418,3 +361,59 @@ print('true false check-in- for str','5'in '159763')
 print(sum(1 for x in range(0,15,2)))
 
 print('overshot',sum(1 for x in range(4,2,1)))
+
+# testing operations on characters
+letter = 'i'
+letter2 = chr (ord(letter)+5)
+print(letter, letter2)
+
+
+# check if variable is defined:
+if 'letter' in vars() or 'letter' in globals():
+    print('letter is defined')
+
+# check if a bunch of variables are defined
+if {'letter','letter2'}.issubset(vars()) or {'letter','letter2'}.issubset(globals()):
+    print('multiple items already defined')
+
+# fancy ways for incrrement/ decrement/ trying out function pointer
+inc = lambda x: chr(ord(x) + 1)
+dec = lambda x: chr(ord(x) - 1)
+walk = lambda fn, x : fn(x)
+
+def fn( way):
+    if (way == 'inc'):
+        answer = []
+        for i in range(0,30):
+            letter = answer.append(walk(inc,letter) )
+            answer.append(letter)
+        return answer
+    answer = []
+    for i in range(0,30):
+        letter = answer.append(walk(dec,letter) )
+        answer.append(letter)
+    return answer
+
+#merging lists
+l3 = [3,5,7]
+l5 = [2,4,8,6,0]
+#simple merge
+print(l3+l5)
+# only merge up to list with lower total
+print(list([zip(l3,l5)]))   #[(3, 2), (5, 4), (7, 8)]
+
+#test if enumerate is needed for zip
+print('enumerate and list comprehension test',[(i,x) for i,x in enumerate(zip(l3,l5))] )
+
+# generate a range of chars
+print([chr(x) for x in range(ord('a'),ord('z'))])
+
+# putting vars in dictionary and then modifying dictionary
+var1 = 0
+var2 = 0
+d = {0:var1 , 1:var2}
+print(ls)
+d[0],d[1] = 2,3
+print(d,var1,var2)
+
+print('joining stuff',''.join(['a','b']),''.join(['a','b','c']))
