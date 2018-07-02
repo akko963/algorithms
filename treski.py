@@ -24,13 +24,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 COLORS = ['RED','blue','cyan','black','dark violet','purple', 'brown','dark red','dark blue']
 board = lambda x,y : ('A',chr(ord('A')+x),'A',chr(ord('A')+y))
 
-N,S,W,E = board(21,19)
+N,S,W,E = board(20,18)
 list0_inc=[chr(x) for x in range(ord(N),ord(S)+1)]
 list0_dec=list(reversed([chr(x) for x in range(ord(N),ord(S)+1)]))
 list1_inc=[chr(x) for x in range(ord(W),ord(E)+1)]
 list1_dec=list(reversed([chr(x) for x in range(ord(W),ord(E)+1)]))
 
 import itertools
+import unittest
 
 class Treski(object):
 
@@ -48,6 +49,8 @@ class Treski(object):
             for dest in ['NW','NE','SW','SE']:
                 list0 = list(itertools.dropwhile(lambda x: x != id[0], list0_dec if dest[0]=='N' else list0_inc))
                 list1 = list(itertools.dropwhile(lambda x: x != id[1], list1_dec if dest[1]=='W' else list1_inc))
+                list0[:] =list0[1:]
+                list1[:] = list1[1:]
                 self.directions[dest] = [''.join(x) for x in zip(list0,list1)]
         else:
             for dest in ['NW', 'NE', 'SW', 'SE']: self.directions[dest] = list()
@@ -91,7 +94,6 @@ def generate():
             newTs = [[x[0], x[1], all_dots[findIndex(x[0])].hop('W', i + 1)]]
             Ts += newTs
         for i, x in enumerate(zip(listS, listE)):
-            print(x)
             newTs = [[x[0], x[1], all_dots[findIndex(x[0])].hop('E', i + 1)]]
             Ts += newTs
     return all_dots,Ts
@@ -105,9 +107,9 @@ def tk():
     draw the grid and triangles generated from generate()
     @return:
     '''
-    indent_x=indent_y = 50
-    gap_x = 20
-    gap_y = 25
+    indent_x=indent_y = 20
+    gap_x = 34
+    gap_y = 24
     tl = lambda letter : ord(letter) - ord('A')  # translate from letter to a number (id)
     def translate (tri):
         '''
@@ -124,15 +126,48 @@ def tk():
     for x,id in frame:
         c.create_text((x[0],x[1]),text=id, fill = 'Gray')
     print('Total Number of Triangles',len(Ts))
+    c.update()
+    sleep(25)
     for x in Ts:
-        sleep(.05)
+        sleep(.01)
         c.delete('triangles')
         c.create_polygon(translate(x),fill= COLORS[randint(0,len(COLORS)-1)],tags = 'triangles')
         c.update()
+    c.update()
     c.winfo_geometry()
     tkinter.mainloop()
+
+class TTreski(unittest.TestCase):
+    def test_A(self):
+        print('a')
+    def testT(self):
+        all,Ts = generate()
+        print('Total Number of Triangles from generated list:',len(Ts))
+        Ts = [*map(lambda x: tuple(x), Ts)]
+
+        print(Ts[:20])
+        original = {*map(lambda x: tuple(x), Ts)}
+        print("original total, unique", len(original))
+        modified= {*map(lambda x: tuple(sorted(x)), Ts)}
+        modified = list(modified)
+        print('modified total, unique',len(modified))
+        self.assertEqual(len(original),len(modified))
+
+        #look for dupes
+        from collections import Counter
+        dupes = [k for k, v in Counter(Ts).items() if v > 1]
+        self.assertEqual(len(dupes),0)
+        # IF there ARE any dupes, lets see what they are
+        print('dupes', len(dupes), dupes)
+        print('dupes',[ (x,"@ index",i) for x in dupes  for i,T in enumerate(Ts)if T== x])
+
+
+    def setUp(self):
+        pass
 
 if __name__ == '__main__':
     import sys
     if sys.flags.interactive != 1 :
-        tk()
+        #tk()
+        unittest.main()
+        pass
